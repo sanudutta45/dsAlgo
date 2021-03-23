@@ -1,0 +1,111 @@
+#include<iostream>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+
+int precedence(char oper){ 
+    if(oper == '^') 
+    return 3; 
+    else if(oper == '*' || oper == '/') 
+    return 2; 
+    else if(oper == '+' || oper == '-') 
+    return 1; 
+    else
+    return -1; 
+}
+
+bool oper(char ex){
+    switch(ex){
+        case '^':
+        case '*':
+        case '/':
+        case '+':
+        case '-': return true;
+        break;
+        default: return false;
+        break;
+    }
+}
+
+bool isPrec(char oper1, char oper2){
+    return precedence(oper1) > precedence(oper2);
+}
+
+std::string inTopreFix(std::string exp){
+    std::stack<char> root;
+    std::string ns;
+    root.push('N');
+    
+    for(int i=exp.length()-1;i>=0;i--){
+        if(oper(exp[i])){
+            while(isPrec(root.top(),exp[i]) && root.top()!='N'){
+                ns+=root.top();
+                root.pop();
+            }
+            root.push(exp[i]);
+            
+        }
+        else if(exp[i]==')') root.push(exp[i]);
+        else if(exp[i]=='('){
+            while(root.top()!=')' &&  root.top()!='N'){
+                ns+=root.top();
+                root.pop();
+            }
+            root.pop();
+        }
+        else{
+            ns+=exp[i];
+        }
+    }
+    
+    while(root.top()!='N'){
+        ns+=root.top();
+        root.pop();
+    }
+    return ns;
+}
+
+double operation(int oper1, int oper2, char op){
+    switch(op){
+        case '+': return oper1 + oper2;
+        break;
+        case '-': return oper1 - oper2;
+        break;
+        case '*': return oper1 * oper2;
+        break;
+        case '/': return oper1 / oper2;
+        break;
+        default: return -1;
+        break;
+    }
+}
+
+void evalPrefixExp(string exp){
+    stack<double> root;
+    for(int i=0;i<exp.length();i++){
+        if(oper(exp[i])){
+            double op1 = root.top();
+            root.pop();
+            double op2 = root.top();
+            root.pop();
+            double result = operation(op1,op2,exp[i]);
+            root.push(result);
+        }
+        else{
+            double temp = exp[i] - 48;
+            root.push(temp);
+        }
+    }
+    
+    cout<<"Result: "<<root.top();
+}
+
+int main(){
+    std::string infixExp = "5+(7-3)/2";
+    std::string prefixExp = inTopreFix(infixExp);
+    cout<<prefixExp<<endl;
+    evalPrefixExp(prefixExp);
+    return 0;
+}
