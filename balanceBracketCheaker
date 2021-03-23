@@ -1,0 +1,55 @@
+#include<iostream>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+int isOpenBracket(char b){
+    switch(b){
+        case '(':
+        case '[':
+        case '{': return 1;
+        break;
+        case ')':
+        case ']':
+        case '}': return 0;
+        default: return -1;
+        break;
+    }
+}
+
+bool isBracketPair(char b1, char b2){
+    if(b1 == '(' && b2 == ')') return true;
+    else if(b1 == '{' && b2 == '}') return true;
+    else if(b1 == '[' && b2 == ']') return true;
+    else return false;
+}
+
+bool balanceBracketsCheaker(string s){
+    stack<char> bracket;
+    int length = s.length();
+    
+    bracket.push('N');
+    if(length<2) return false;
+    for(int i=0;i<length;i++){
+        if(isOpenBracket(s[i]) == 1){
+            bracket.push(s[i]);
+        }else if(isOpenBracket(s[i]) == 0){
+            if(!isBracketPair(bracket.top(),s[i])) return false;
+            bracket.pop();
+        }else{
+            continue;
+        }
+    }
+    
+    return true;
+}
+
+
+int main(){
+    string test_string ="{";
+    
+    bool isBalance = balanceBracketsCheaker(test_string);
+    isBalance ? cout<<"Balanced" : cout<<"Unbalanced";
+    return 0;
+}
