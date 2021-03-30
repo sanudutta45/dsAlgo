@@ -1,0 +1,155 @@
+#include <iostream>
+#include <string>
+#include <stack>
+
+
+using namespace std;
+
+bool isPo(char op)
+{
+    switch(op)
+    {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '^': return true;
+        break;
+        default: return false;
+        break;
+    }
+}
+
+int prec(char op)
+{
+    if(op=='+' || op=='-')
+    {
+        return 2;
+    }
+    else if(op=='*' || op=='/')
+    {
+        return 3;
+    }
+    else if(op=='^')
+    {
+        return 4;
+    }
+    else return -1;
+}
+
+bool isPrec(char op1, char op2){
+    return prec(op1) >= prec(op2);
+}
+
+string infixToPostfix(string exp)
+{
+    stack<char> infix;
+    string ns;
+    int length = exp.length();
+    
+    infix.push('N');
+    
+    for(int i=0;i<length;i++)
+    {
+        if(isPo(exp[i]))
+        {
+            while(isPrec(infix.top(),exp[i]) && infix.top() != 'N'){
+                ns += infix.top();
+                infix.pop();
+            }
+            infix.push(exp[i]);
+        }
+        else if(exp[i] == '(')
+        {
+            infix.push(exp[i]);
+        }
+        else if(exp[i] == ')')
+        {
+            while(infix.top() != '(' && infix.top() != 'N')
+            {
+                ns += infix.top();
+                infix.pop();
+            }
+            infix.pop();
+        }
+        else ns += exp[i];
+        
+    }
+    
+    while(infix.top() != 'N'){
+        ns += infix.top();
+        infix.pop();
+    }
+    
+    return ns;
+}
+
+struct Node
+{
+    char op;
+    Node* left;
+    Node* right;
+};
+
+Node* createNode(char op, Node* opd1,Node* opd2)
+{
+    Node* newNode = new Node();
+    newNode->op = op;
+    newNode->left = opd1;
+    newNode->right = opd2;
+    
+    return newNode;
+}
+
+Node *BET(string exp)
+{
+    int expLength = exp.length();
+    stack<Node*> t;
+    
+    for(int i=0;i<expLength;i++)
+    {
+        if(isPo(exp[i]))
+        {
+            Node* opd2 = t.top();
+            t.pop();
+            Node* opd1 = t.top();
+            t.pop();
+            Node* opNode = createNode(exp[i],opd1,opd2);
+            t.push(opNode);
+        }
+        else
+        {
+            Node* opd = createNode(exp[i],NULL,NULL);
+            t.push(opd);
+        }
+    }
+    
+    Node* root = t.top();
+    t.pop();
+    
+    return root;
+}
+
+Node* DLR(Node* root){
+    if(root == NULL) return root;
+    
+    DLR(root->left);
+    cout<<root->op;
+    DLR(root->right);
+}
+
+
+int main()
+{
+    string infixExp = "5+(8-4)/2";
+    
+    string postfixExp = infixToPostfix(infixExp);
+    
+    Node* expTree = BET(postfixExp);
+    
+    cout<<postfixExp<<endl;
+    
+    DLR(expTree);
+    
+    return 0;
+}
