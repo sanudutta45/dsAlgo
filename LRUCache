@@ -1,0 +1,119 @@
+#include <iostream>
+#include <unordered_map>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* next;
+    Node* prev;
+};
+
+Node* createNode(int n){
+    Node* newNode = new Node();
+    newNode->data = n;
+    newNode->next = newNode->prev = NULL;
+    
+    return newNode;
+}
+
+class LRUCache{
+    int csize;
+    int currentSize;
+    Node* rear;
+    Node* front;
+    unordered_map<int,Node*> ma;
+    
+    public:
+    
+     LRUCache(int cacheSize){
+        csize = cacheSize;
+        currentSize = 0;
+        rear = NULL;
+        front = NULL;
+    }
+    
+    void put(int data){
+        if(front == NULL){
+            Node* newNode = createNode(data);
+            front = rear = newNode;
+            ma[data] = newNode;
+            // cout<<" 1st ";
+        }
+        else if(ma.find(data) == ma.end()){
+            if(currentSize < csize){
+                Node* newNode = createNode(data);
+                front->prev = newNode;
+                newNode->next = front;
+                front = newNode;
+                ma[data] = newNode;
+                
+                currentSize++;
+                // cout<<" 2nd "<<currentSize<<" ";
+
+            }
+            else{
+                Node* newNode = createNode(data);
+                front->prev = newNode;
+                newNode->next = front;
+                front = newNode;
+                ma[data] = newNode;
+                Node* temp = rear;
+                rear = rear->prev;
+                rear->next = NULL;
+                ma.erase(temp->data);
+                delete(temp);
+                // cout<<" 3rd ";
+            }
+        }
+        else{
+            Node* temp = ma[data];
+            
+            if(temp->next != NULL && temp->prev != NULL){
+                temp->next->prev = temp->prev;
+                temp->prev->next = temp->next;
+                front->prev = temp;
+                temp->next = front;
+                temp->prev = NULL;
+                front = temp;
+            }
+            else if(temp->next == NULL){
+                front->prev = temp;
+                rear->prev->next = NULL;
+                rear = rear->prev;
+                temp->next = front;
+                temp->prev = NULL;
+                front = temp;
+            }
+
+        }
+        
+    }
+    
+    void display(){
+        Node* temp = front;
+        while(temp != NULL){
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+    }
+};
+
+int main()
+{
+    LRUCache ca(4);
+    
+    ca.put(1);
+    ca.put(2);
+    ca.put(3);
+    ca.put(4);
+    ca.put(5);
+    ca.put(6);
+    ca.put(2);
+    ca.put(2);
+    ca.put(8);
+
+    ca.display();
+
+    return 0;
+}
