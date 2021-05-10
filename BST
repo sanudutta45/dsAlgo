@@ -1,0 +1,42 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+Node* createNode(int data){
+    Node* newNode = new Node();
+    newNode->left = newNode->right = 0;
+    newNode->data = data;
+    return newNode;
+}
+
+Node* InsertNode(Node* root, int data){
+    if(root == NULL) root = createNode(data);
+    else if (data <= root->data) root->left = InsertNode(root->left,data);
+    else root->right = InsertNode(root->right,data);
+    
+    return root;
+}
+
+void LDR(Node* root){
+    if(root == NULL) return;
+    
+    LDR(root->left);
+    cout<<root->data<<" ";
+    LDR(root->right);
+}
+
+int main()
+{
+    Node* root = NULL;
+    
+    root = InsertNode(root,10);
+    root = InsertNode(root,6);
+    root = InsertNode(root,12);
+    LDR(root);
+}
