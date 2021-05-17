@@ -1,0 +1,120 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+Node* createNode(int data){
+    Node* newNode = new Node();
+    newNode->left = newNode->right = 0;
+    newNode->data = data;
+    return newNode;
+}
+
+Node* InsertNode(Node* root, int data){
+    if(root == NULL) root = createNode(data);
+    else if (data <= root->data) root->left = InsertNode(root->left,data);
+    else root->right = InsertNode(root->right,data);
+    
+    return root;
+}
+
+void LDR(Node* root){
+    if(root == NULL) return;
+    
+    LDR(root->left);
+    cout<<root->data<<" ";
+    LDR(root->right);
+}
+
+
+Node* minValue(Node* root){
+    while(root->left != NULL){
+        root = root->left;
+    }
+    
+    return root;
+}
+
+
+
+Node* successor(Node* root, Node* node){
+    if(root == NULL) return NULL;
+    
+    if(node->right != NULL){
+        return minValue(node->right);
+    }
+
+    Node* succ = NULL;
+    
+    while (root != NULL)
+    {
+        if (node->data < root->data)
+        {
+            succ = root;
+            root = root->left;
+        }
+        else if (node->data > root->data)
+            root = root->right;
+        else
+            break;
+    }
+ 
+    return succ;
+}
+
+Node* maxValue(Node* root){
+    while(root->right != NULL){
+        root = root->right;
+    }
+    
+    return root;
+}
+
+Node* predessor(Node* root, Node* node){
+    if(root == NULL) return NULL;
+    
+    if(node->left != NULL){
+        return maxValue(node->left);
+    }
+    
+    Node* current = NULL;
+    
+    while(root != NULL){
+        if(node->data < root->data){
+            root = root->left;
+        }
+        else if(node->data > root->data){
+            current = root;
+            root = root->right;
+        }
+        else break;
+    }
+    
+    return current;
+}
+
+int main()
+{
+    Node* root = NULL;
+    
+   root = InsertNode(root, 20);
+    root = InsertNode(root, 8);
+    root = InsertNode(root, 22);
+    root = InsertNode(root, 4);
+    root = InsertNode(root, 12);
+    root = InsertNode(root, 10);
+    root = InsertNode(root, 14);
+
+
+    LDR(root);
+    Node* succ = successor(root,root->left->right->right);
+    if(succ != NULL) cout<<"successor: "<<succ->data <<" of "<<root->left->right->data<<endl;
+    
+    Node* pre = predessor(root,root->left->right->left);
+    if(pre != NULL) cout<<"predessor: "<<pre->data <<" of "<<root->left->right->left->data;
+}
