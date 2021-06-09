@@ -1,0 +1,55 @@
+
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* next;
+    Node* prev;
+};
+
+Node* createNode(int data){
+    Node* newNode = new Node();
+    
+    newNode->data = data;
+    
+    newNode->next = newNode->prev = NULL;
+    
+    return newNode;
+}
+
+Node* InsertNode(Node* root,int data){
+    if(root == NULL) root = createNode(data);
+    
+    else{
+        root->next = InsertNode(root->next,data);
+        root->next->prev = root;
+    }
+    
+    return root;
+    
+}
+
+void displayDLL(Node* root){
+    if(root == NULL) return;
+    
+    cout<<root->data<<" ";
+    displayDLL(root->next);
+}
+
+int main()
+{
+    Node* root = NULL;
+    
+    root = InsertNode(root,1);
+    root = InsertNode(root,2);
+    root = InsertNode(root,3);
+    root = InsertNode(root,4);
+    root = InsertNode(root,5);
+    root = InsertNode(root,6);
+    
+    displayDLL(root);
+
+    return 0;
+}
