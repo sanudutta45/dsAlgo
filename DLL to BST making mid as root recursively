@@ -1,0 +1,90 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* next;
+    Node* prev;
+};
+
+Node* createNode(int data){
+    Node* newNode = new Node();
+    
+    newNode->data = data;
+    
+    newNode->next = newNode->prev = NULL;
+    
+    return newNode;
+}
+
+Node* InsertNode(Node* head,int data){
+    if(head == NULL) head = createNode(data);
+    
+    else{
+        head->next = InsertNode(head->next,data);
+        head->next->prev = head;
+    }
+    
+    return head;
+    
+}
+
+Node* getMid(Node* head){
+    
+    Node* fastPtr = head;
+    Node* slowPtr = head;
+    
+    while(fastPtr != NULL && fastPtr->next != NULL){
+        slowPtr = slowPtr->next;
+        fastPtr = fastPtr->next->next;
+    }
+    
+    return slowPtr;
+}
+
+Node* DLLtoBST(Node* head){
+    if(head == NULL || head->next == NULL) return head;
+    
+    Node* mid = getMid(head);
+    if(mid->prev != NULL) mid->prev->next = NULL;
+    if(mid->next != NULL) mid->next->prev = NULL;
+    mid->prev = DLLtoBST(head);
+    mid->next = DLLtoBST(mid->next);
+    
+    return mid;
+}
+
+void displayDLL(Node* root){
+    if(root == NULL) return;
+    
+    cout<<root->data<<" ";
+    displayDLL(root->next);
+}
+
+void LDR(Node* root){
+    if(root == NULL) return;
+    
+    
+    LDR(root->prev);
+    cout<<root->data<<" ";
+    LDR(root->next);
+}
+
+int main()
+{
+    Node* head = NULL;
+    
+    head = InsertNode(head,1);
+    head = InsertNode(head,2);
+    head = InsertNode(head,3);
+    head = InsertNode(head,4);
+    head = InsertNode(head,5);
+    head = InsertNode(head,6);
+    
+    head = DLLtoBST(head);
+
+    LDR(head);
+    
+    return 0;
+}
