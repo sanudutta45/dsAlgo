@@ -1,0 +1,65 @@
+#include <iostream>
+
+using namespace std;
+
+
+void selectionSort(int arr[],int n){
+    for(int i=0; i<n-1; i++){
+        int minValue = arr[i];
+        for(int j=i; j< n; j++){
+            if(arr[j]<arr[i]){
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+void bubbleSort(int arr[],int n){
+ for(int k=0; k< n; k++){
+     bool flag = true;
+    for(int i=0;i<n-k-1;i++){
+        if(arr[i] > arr[i+1]){
+            int temp = arr[i];
+            arr[i] = arr[i+1];
+            arr[i+1] = temp;
+            flag = false;
+        }
+    }
+    if(flag == true) break;
+  }
+}
+
+void insertionSort(int arr[],int n){
+    for(int i=1; i<n; i++){
+        int value = arr[i];
+        int hole = i;
+        while(hole>0 && arr[hole-1] > value){
+            arr[hole] = arr[hole-1];
+            hole = hole-1;
+        }
+        arr[hole] = value;
+        
+    }
+}
+
+void printArr(int arr[],int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+}
+
+
+int main()
+{
+    int arr[] = {4,2,7,12,43,23,13,1};
+    int n = sizeof(arr)/sizeof(int);
+    
+    // selectionSort(arr,n);
+    // bubbleSort(arr,n);
+    insertionSort(arr,n);
+    printArr(arr,n);
+    
+    return 0;
+}
