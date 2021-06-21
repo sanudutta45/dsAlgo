@@ -1,0 +1,36 @@
+#include <iostream>
+
+using namespace std;
+
+void printArr(int arr[],int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+}
+
+int binarySearch(int arr[],int start, int end,int value){
+    if(start>end) return -1;
+    
+    int mid = start + (end - start)/2;
+    
+    if(arr[mid] == value) return mid;
+    
+    if(arr[mid] < value){
+        binarySearch(arr,mid+1,end,value);
+    }else{
+        binarySearch(arr,start,mid - 1,value);
+    }
+    
+}
+
+
+int main()
+{
+    int arr[] = {5,12,13,15,20,23,25,27,29};
+
+    int found = binarySearch(arr,0,n-1,11);
+    if(found != -1) cout<<"found in position "<<found<<endl;
+    else cout<<"Element not found";
+    
+    return 0;
+}
