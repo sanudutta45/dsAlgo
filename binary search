@@ -23,6 +23,58 @@ int binarySearch(int arr[],int start, int end,int value){
     
 }
 
+// min element in a circular sorted array
+int minElement(int arr[],int l,int r){
+    if(l>r) return -1;
+    
+    int mid = l + (r - l)/2;
+    
+    if(arr[mid] < arr[mid-1]) return mid;
+    else if(arr[mid]>arr[l] && arr[mid]>arr[r]) minElement(arr,mid,r);
+    else minElement(arr,l,mid);
+}
+
+// circular binary search
+int circularBinarySearch(int arr[],int l,int r,int value){
+    if(l>r) return -1;
+    
+    int mid = l + (r - l)/2;
+    
+    if(arr[mid] == value) return mid;
+    else if(arr[mid]<=arr[r]){
+        if(value>arr[mid] && value<=arr[r]) circularBinarySearch(arr,mid+1,r,value);
+        else circularBinarySearch(arr,l,mid-1,value);
+    }
+    else{
+        if(value<arr[mid] && value>=arr[l]) circularBinarySearch(arr,l,mid-1,value);
+        else circularBinarySearch(arr,mid+1,r,value);
+    }
+}
+
+// binary search in sorted row and column incremental 2d array
+int twoDBinarySearch(int arr[3][3],int l,int r,int n,int value){
+    if(l>r) return -1;
+    
+    int mid = l + (r - l)/2;
+    
+    int midRow = mid / n;
+    int midCol = mid % n;
+    
+    if(arr[midRow][midCol] == value) return mid;
+    else if(value < arr[midRow][midCol]) twoDBinarySearch(arr,l,mid-1,n,value);
+    else twoDBinarySearch(arr,mid+1,r,n,value);
+}
+
+//space reduction binary search in 2d space with sorted row and column 
+bool SpaceReductionBinarySearch(int arr[3][3],int maxRowIn,int maxColIn,int cRow,int cCol,int value){
+    if(cRow > maxRowIn || cCol > maxColIn) return false;
+    
+    
+    if(arr[cRow][cCol] == value) return true;
+    else if(value > arr[cRow][cCol]) SpaceReductionBinarySearch(arr,maxRowIn,maxColIn,cRow,++cCol,value);
+    else SpaceReductionBinarySearch(arr,maxRowIn,maxColIn,--cRow,cCol,value);
+}
+
 
 int main()
 {
