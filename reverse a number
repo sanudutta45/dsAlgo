@@ -1,0 +1,31 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+
+//reversing a number
+
+void reverseNumber(int num){
+    int result = 0;
+    
+    int remaining = abs(num);
+    
+    while(remaining != 0){
+        result *= 10;
+        result+= remaining%10;
+        remaining/=10;
+    }
+    
+    if(num < 0) cout<<"-"<<result;
+    else cout<<result;
+}
+
+int main()
+{
+    int numToReverse = -123;
+    
+    reverseNumber(numToReverse);
+
+    return 0;
+}
