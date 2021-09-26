@@ -1,0 +1,76 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node
+{
+  int data;
+  Node *next;
+};
+
+//create a new node
+Node *
+create (int data)
+{
+  Node *newNode = new Node ();
+  newNode->data = data;
+  newNode->next = NULL;
+
+  return newNode;
+}
+
+//insert node a linked list
+Node *
+insert (Node * head, int value)
+{
+  if (head == NULL)
+    head = create (value);
+
+  else
+    head->next = insert (head->next, value);
+
+
+  return head;
+}
+
+//reverse a linked list
+Node* reverse(Node* head){
+    
+    Node* currNode = head;
+    Node* prevNode = NULL;
+    Node* nextNode = NULL;
+    
+    while(currNode != NULL){
+        nextNode = currNode->next;
+        currNode->next = prevNode;
+        prevNode = currNode;
+        currNode = nextNode;
+    }
+    
+    head = prevNode;
+    
+    return head;
+}
+
+
+int
+main ()
+{
+
+  Node *head = NULL;
+
+  head = insert (head, 22);
+  head = insert (head, 23);
+//   head = insert (head, 24);
+//   head = insert (head, 25);
+  
+  head = reverse(head);
+
+  while (head)
+    {
+      cout << head->data << "->";
+      head = head->next;
+    }
+
+  return 0;
+}
