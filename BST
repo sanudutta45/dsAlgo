@@ -23,12 +23,28 @@ Node* InsertNode(Node* root, int data){
     return root;
 }
 
+//depth first search
 void LDR(Node* root){
     if(root == NULL) return;
     
     LDR(root->left);
     cout<<root->data<<" ";
     LDR(root->right);
+}
+
+//Breadth first search
+void BFS(Node* root){
+    queue<Node*> node;
+    
+    node.push(root);
+    
+    while(!node.empty()){
+        Node* currNode = node.front();
+        cout<<currNode->data<<" ";
+        if(currNode->left) node.push(currNode->left);
+        if(currNode->right) node.push(currNode->right);
+        node.pop();
+    }
 }
 
 int main()
