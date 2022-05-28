@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+// print fibonacci series using while loop
+void printFibonacciSeriesWithLoop(){
+    int firstNumber = 0;
+    int secondNumber = 1;
+    int number;
+    int i = 2;
+    
+    cout<<"Enter number of element in a fibonacci series: ";
+    cin>>number;
+    cout<<firstNumber<<" "<<secondNumber<<" ";
+    while(i < number){
+        int sum = firstNumber + secondNumber;
+        cout<<sum<<" ";
+        firstNumber = secondNumber;
+        secondNumber = sum;
+        i++;
+    }
+}
+
+// print fibonacci series using recurssion
+void printFibonacciSeriesWithRecurssion(int firstNumber, int secondNumber, int start, int end){
+    if(start >= end) return;
+    
+    int sum = firstNumber + secondNumber;
+    cout<<sum<<" ";
+    printFibonacciSeriesWithRecurssion(secondNumber,sum,start+1,end);
+}
+
+int main()
+{
+    // printFibonacciSeriesWithLoop();
+    int firstNumber = 0;
+    int secondNumber = 1;
+    int number;
+    cout<<"Enter number of element in a fibonacci series: ";
+    cin>>number;
+    cout<<firstNumber<<" "<<secondNumber<<" ";
+    printFibonacciSeriesWithRecurssion(firstNumber,secondNumber,2,number);
+
+    return 0;
+}
