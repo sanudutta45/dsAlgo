@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+int nthFabonaci(int num){
+    
+    if(num < 2) return num;
+    
+    // formula
+    // Fn = F0 + F1
+    // 0 1 1 2 3 5 8 ....
+    
+    int f0 = 0;
+    int f1 = 1;
+    
+    int i = 2;
+    int fn;
+    
+    while(i <= num){
+        fn = f0 + f1;
+        f0 = f1;
+        f1 = fn;
+        i++;
+    }
+    
+    return fn;
+}
+
+int main()
+{
+    
+    int num = 6;
+    
+    int result = nthFabonaci(num);
+    cout<<"result is: "<<result;
+}
