@@ -25,6 +25,28 @@ int nthFabonaci(int num){
     return fn;
 }
 
+// number of ways to climb a stairs
+// 1 or 2 at a time
+int climbStairs(int num){
+    
+    if(num < 3) return num;
+    
+    int f1 = 1;
+    int f2 = 2;
+    int fn;
+    
+    int i = 3;
+
+    while(i <= num){
+        fn = f1 + f2;
+        f1 = f2;
+        f2 = fn;
+        i++;
+    }
+    
+    return fn;
+}
+
 int main()
 {
     
