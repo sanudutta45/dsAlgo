@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+void towerOfHonoi(int n,char fromRod,char toRod,char usingRod){
+    if(n == 1){
+        cout<<"Moving Disk 1 from "<<fromRod<<" to "<<toRod<<endl;
+        return;
+    }
+    towerOfHonoi(n-1,fromRod,usingRod,toRod);
+    cout<<"Moving Disk "<<n<<" from "<<fromRod<<" to "<<toRod<<endl;
+    towerOfHonoi(n-1,usingRod,toRod,fromRod);
+}
+
+int main()
+{
+    
+    towerOfHonoi(3,'A','C','B');
+    return 0;
+}
