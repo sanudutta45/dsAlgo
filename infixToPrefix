@@ -33,6 +33,44 @@ bool isPrec(char oper1, char oper2){
     return precedence(oper1) > precedence(oper2);
 }
 
+string infixToPostfix(string expr){
+    stack<char> operStack;
+    string postExp;
+    
+    char currentChar;
+    
+    for(int i=0; i<expr.length(); i++){
+        currentChar = expr[i];
+        if(isOper(currentChar) && operStack.empty()) 
+            operStack.push(currentChar);
+        else if(!operStack.empty() && isOper(currentChar)) {
+            while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
+                postExp += operStack.top();
+                operStack.pop();
+            }
+            operStack.push(currentChar);
+        }
+        else if(currentChar == '(') operStack.push(currentChar);
+        else if(currentChar == ')') {
+            while(operStack.top() != '(' && !operStack.empty()) {
+                postExp += operStack.top();
+                operStack.pop();
+            }
+            
+            operStack.pop();
+        }
+        else postExp += currentChar;
+        
+    }
+    
+    while(!operStack.empty()) {
+        postExp += operStack.top();
+        operStack.pop();
+    }
+    
+    return postExp;
+}
+
 std::string inTopreFix(std::string exp){
     std::stack<char> root;
     std::string ns;
