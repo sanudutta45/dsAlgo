@@ -1,23 +1,18 @@
-#include<iostream>
-#include <string>
-#include <stack>
+/******************************************************************************
 
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include<string>
+#include<stack>
 using namespace std;
 
-
-int precedence(char oper){ 
-    if(oper == '^') 
-    return 3; 
-    else if(oper == '*' || oper == '/') 
-    return 2; 
-    else if(oper == '+' || oper == '-') 
-    return 1; 
-    else
-    return -1; 
-}
-
-bool oper(char ex){
-    switch(ex){
+bool isOper(char oper) {
+    switch(oper){
         case '^':
         case '*':
         case '/':
@@ -29,8 +24,15 @@ bool oper(char ex){
     }
 }
 
-bool isPrec(char oper1, char oper2){
-    return precedence(oper1) > precedence(oper2);
+int precedence(char oper) {
+    if(oper == '^') return 3;
+    else if(oper == '*' || oper == '/') return 2;
+    else if(oper == '+' || oper == '-') return 1;
+    else return -1;
+}
+
+bool isHighPrec(char oper1, char oper2) {
+    return precedence(oper1) >= precedence(oper2);
 }
 
 string infixToPostfix(string expr){
@@ -43,7 +45,7 @@ string infixToPostfix(string expr){
         currentChar = expr[i];
         if(isOper(currentChar) && operStack.empty()) 
             operStack.push(currentChar);
-        else if(!operStack.empty() && isOper(currentChar)) {
+        else if(isOper(currentChar)) {
             while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
                 postExp += operStack.top();
                 operStack.pop();
@@ -71,79 +73,57 @@ string infixToPostfix(string expr){
     return postExp;
 }
 
-std::string inTopreFix(std::string exp){
-    std::stack<char> root;
-    std::string ns;
-    root.push('N');
+string infixToPrefix(string expr) {
+    stack<char> operStack;
+    string prefixExp;
     
-    for(int i=exp.length()-1;i>=0;i--){
-        if(oper(exp[i])){
-            while(isPrec(root.top(),exp[i]) && root.top()!='N'){
-                ns+=root.top();
-                root.pop();
+    for(int i=expr.length() - 1; i >=0; i--) {
+        char currentChar = expr[i];
+        
+        if(isOper(currentChar) && operStack.empty()) {
+            operStack.push(currentChar);
+        }
+        else if(isOper(currentChar)) {
+           while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
+               prefixExp += operStack.top();
+               operStack.pop();
+           }
+           operStack.push(currentChar);
+        }
+        else if(currentChar == ')') operStack.push(')');
+        else if(currentChar == '(') {
+            while(!operStack.empty() && operStack.top() != ')') {
+                prefixExp += operStack.top();
+                operStack.pop();
             }
-            root.push(exp[i]);
-            
+            operStack.pop();
         }
-        else if(exp[i]==')') root.push(exp[i]);
-        else if(exp[i]=='('){
-            while(root.top()!=')' &&  root.top()!='N'){
-                ns+=root.top();
-                root.pop();
-            }
-            root.pop();
-        }
-        else{
-            ns+=exp[i];
+        else {
+            prefixExp+= currentChar;
         }
     }
     
-    while(root.top()!='N'){
-        ns+=root.top();
-        root.pop();
-    }
-    return ns;
-}
-
-double operation(int oper1, int oper2, char op){
-    switch(op){
-        case '+': return oper1 + oper2;
-        break;
-        case '-': return oper1 - oper2;
-        break;
-        case '*': return oper1 * oper2;
-        break;
-        case '/': return oper1 / oper2;
-        break;
-        default: return -1;
-        break;
-    }
-}
-
-void evalPrefixExp(string exp){
-    stack<double> root;
-    for(int i=0;i<exp.length();i++){
-        if(oper(exp[i])){
-            double op1 = root.top();
-            root.pop();
-            double op2 = root.top();
-            root.pop();
-            double result = operation(op1,op2,exp[i]);
-            root.push(result);
-        }
-        else{
-            double temp = exp[i] - 48;
-            root.push(temp);
-        }
+    while(!operStack.empty()) {
+        prefixExp += operStack.top();
+        operStack.pop();
     }
     
-    cout<<"Result: "<<root.top();
+    return prefixExp;
 }
 
-int main(){
-    std::string infixExp = "5+(7-3)/2";
-    std::string prefixExp = inTopreFix(infixExp);
-    cout<<prefixExp<<endl;
-    evalPrefixExp(prefixExp);
+int main()
+{
+    string infixExp;
+    
+    cout<<"Enter an infix expression: ";
+    getline(cin,infixExp);
+    string postExp = infixToPostfix(infixExp);
+    string prefixExp = infixToPrefix(infixExp);
+    cout<<"Post fix expression: "<<postExp<<endl;
+    cout<<"Prefix expression: ";
+    for(int i=prefixExp.length() - 1;i>=0;i--){
+        cout<<prefixExp[i];
+    }
+
     return 0;
 }
