@@ -24,6 +24,10 @@ int precedence(char oper) {
 }
 
 bool isHighPrec(char oper1, char oper2) {
+    return precedence(oper1) > precedence(oper2);
+}
+
+bool isHighOrEqualPrec(char oper1, char oper2) {
     return precedence(oper1) >= precedence(oper2);
 }
 
@@ -38,7 +42,7 @@ string infixToPostfix(string expr){
         if(isOper(currentChar) && operStack.empty()) 
             operStack.push(currentChar);
         else if(isOper(currentChar)) {
-            while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
+            while(!operStack.empty() && isHighOrEqualPrec(operStack.top(),currentChar)) {
                 postExp += operStack.top();
                 operStack.pop();
             }
@@ -76,7 +80,7 @@ string infixToPrefix(string expr) {
             operStack.push(currentChar);
         }
         else if(isOper(currentChar)) {
-           while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
+           while(!operStack.empty() && isHighOrEqualPrec(operStack.top(),currentChar)) {
                prefixExp += operStack.top();
                operStack.pop();
            }
@@ -103,6 +107,64 @@ string infixToPrefix(string expr) {
     return prefixExp;
 }
 
+string infixToPrefixTwoStack(string expr) {
+    stack<char> operStack;
+    stack<string> operandStack;
+    
+    string oper;
+    string operand1;
+    string operand2;
+    string operand3;
+    
+    for(int i=0; i<expr.length(); i++) {
+        char currentChar = expr[i];
+        if(isOper(currentChar) && operStack.empty()) operStack.push(currentChar);
+        else if(isOper(currentChar)) {
+            while(!operStack.empty() && isHighPrec(operStack.top(),currentChar)) {
+                oper = operStack.top();
+                operStack.pop();
+                operand1 = operandStack.top();
+                operandStack.pop();
+                operand2 = operandStack.top();
+                operandStack.pop();
+                operand3 = oper + operand2 + operand1;
+                operandStack.push(operand3);
+            }
+            operStack.push(currentChar);
+        }
+        else if(currentChar == '(') operStack.push(currentChar);   
+        
+        else if(currentChar == ')') {
+            while(!operStack.empty() && operStack.top() != '(') {
+                oper = operStack.top();
+                operStack.pop();
+                operand1 = operandStack.top();
+                operandStack.pop();
+                operand2 = operandStack.top();
+                operandStack.pop();
+                operand3 = oper + operand2 + operand1;
+                operandStack.push(operand3);
+            }
+            operStack.pop();
+        }
+        else operandStack.push(string(1,currentChar));
+    }
+
+    while(!operStack.empty()) {
+        oper = operStack.top();
+        operStack.pop();
+        operand1 = operandStack.top();
+        operandStack.pop();
+        operand2 = operandStack.top();
+        operandStack.pop();
+        operand3 = oper + operand2 + operand1;
+        operandStack.push(operand3);
+    }
+    
+    return operandStack.top();
+    
+}
+
 int main()
 {
     string infixExp;
@@ -117,5 +179,7 @@ int main()
         cout<<prefixExp[i];
     }
 
+    string prefixExpTwoStack = infixToPrefixTwoStack(infixExp);
+    cout<<"\nPrefix Two stack expression: "<<prefixExpTwoStack;
     return 0;
 }
