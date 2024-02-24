@@ -1,0 +1,35 @@
+// iterative way
+function subArrays(arr, n) {
+    for(let i=0; i<n; i++) {
+        for(let j=i;j<n;j++) {
+            const temp = []
+            for(let k=i;k<=j;k++) {
+                temp.push(arr[k])
+            }
+            console.log(temp)
+        }
+    }
+}
+
+// recursive two pointer way
+function subArraysRecursive(arr,start,end) {
+    if(end == arr.length) return
+    
+    else if(start > end) {
+        subArraysRecursive(arr,0,end+1)
+    }
+    else {
+        const temp = []
+        for(let i=start;i<=end;i++) {
+            temp.push(arr[i])
+        }
+        if(temp.length > 0)
+            console.log(temp)
+        subArraysRecursive(arr,start+1,end)
+    }
+    return
+}
+
+const arr = [1,2,3,4,5]
+
+subArraysRecursive(arr,0,0)
