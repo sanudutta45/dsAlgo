@@ -1,0 +1,78 @@
+class Node {
+    constructor(value) {
+        this.value = value
+        this.next = null
+    }
+}
+
+class NodeList {
+    constructor() {
+        this.head = null
+        this.length = 0
+    }
+    
+    addStart(value) {
+        const newNode = new Node(value)
+        newNode.next = this.head
+        this.head = newNode
+        this.length++
+    }
+    
+    addEnd(value) {
+        if(!this.head) {
+            addStart(value)
+            return
+        }
+        const newNode = new Node(value)
+        let refHead = this.head
+        while(refHead.next) {
+            refHead = refHead.next
+        }
+        
+        refHead.next = newNode
+        this.length++
+    }
+    
+    findLastNthNode(nth) {
+        let firstRef, secondRef
+        firstRef = this.head
+        secondRef = this.head
+        let distance = 0
+        
+        while(distance < nth) {
+            distance+=1
+            secondRef = secondRef.next
+        }
+        
+        while(secondRef) {
+            secondRef = secondRef.next
+            firstRef = firstRef.next
+        }
+        return firstRef.value
+    }
+    
+    printValues() {
+        let refHead = this.head
+        while(refHead) {
+            console.log(refHead.value)
+            refHead = refHead.next
+        }
+    }
+}
+
+const linkedList = new NodeList()
+
+console.log("LENGTH.. ",linkedList.length)
+
+linkedList.addStart(5)
+linkedList.addStart(8)
+linkedList.addStart(10)
+linkedList.addEnd(17)
+
+console.log("LENGTH.. ",linkedList.length)
+
+linkedList.printValues()
+
+const lastNthNode = linkedList.findLastNthNode(3)
+
+console.log("Last Nth node value: ",lastNthNode)
