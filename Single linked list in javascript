@@ -11,6 +11,7 @@ class NodeList {
         this.length = 0
     }
     
+    // add element at the start of the list
     addStart(value) {
         const newNode = new Node(value)
         newNode.next = this.head
@@ -18,6 +19,7 @@ class NodeList {
         this.length++
     }
     
+    // add element at the end of the list
     addEnd(value) {
         if(!this.head) {
             addStart(value)
@@ -33,6 +35,7 @@ class NodeList {
         this.length++
     }
     
+    // get last nth node
     findLastNthNode(nth) {
         let firstRef, secondRef
         firstRef = this.head
@@ -51,6 +54,103 @@ class NodeList {
         return firstRef.value
     }
     
+    // remove duplicate in a sorted list
+    removeDuplicates() {
+        let currentRef = this.head
+        
+        while(currentRef) {
+            if (currentRef.next && currentRef.value == currentRef.next.value) {
+                currentRef.next = currentRef.next.next
+            }
+            currentRef = currentRef.next
+        }
+    }
+    
+    // insert in a sorted list
+    insertInSorted(value) {
+        
+        const newNode = new Node(value)
+
+        let currentRef = this.head
+        let tempRef = null
+        while(currentRef && currentRef.value < value) {
+            tempRef = currentRef
+            currentRef = currentRef.next
+        }
+        
+        newNode.next = currentRef
+        if(tempRef) tempRef.next = newNode
+    }
+    
+    // remove based on value
+    removeByValue(value) {
+        let currentRef = this.head
+        let tempRef = null
+        while(currentRef && currentRef.value != value) {
+            tempRef = currentRef
+            currentRef = currentRef.next
+        }
+        
+        if(!currentRef) return
+        tempRef.next = currentRef.next
+        
+    }
+    
+    // create a loop at an index
+    createLoop(pos) {
+        let count = 0
+        let currentRef = this.head
+        let temp = null
+        while(currentRef.next) {
+            count+=1
+            if(pos == count) {
+                temp = currentRef
+            }
+        currentRef = currentRef.next
+        }
+        currentRef.next = temp
+    }
+    
+    // get start node of the loop
+    getStartNodeLoop(slowPtr) {
+      let temp = this.head
+      while(slowPtr != temp) {
+        slowPtr = slowPtr.next
+        temp = temp.next
+      }
+      return temp.value
+    }
+    
+    // remove loop
+    removeLoop(slowPtr) {
+      let temp = this.head
+      while(slowPtr.next != temp.next) {
+        slowPtr = slowPtr.next
+        temp = temp.next
+      }
+      
+      slowPtr.next = null
+    }
+    
+    
+    // detect loop
+    detectLoop() {
+        let fastPtr = this.head
+        let slowPtr = this.head
+        
+        while(fastPtr && fastPtr.next) {
+            fastPtr = fastPtr.next.next
+            slowPtr = slowPtr.next
+            if(fastPtr == slowPtr){
+                // return this.getStartNodeLoop(slowPtr)
+                this.removeLoop(slowPtr)
+                return
+            }
+        }
+        return null
+    }
+    
+    // print values
     printValues() {
         let refHead = this.head
         while(refHead) {
@@ -62,17 +162,27 @@ class NodeList {
 
 const linkedList = new NodeList()
 
-console.log("LENGTH.. ",linkedList.length)
-
-linkedList.addStart(5)
 linkedList.addStart(8)
-linkedList.addStart(10)
-linkedList.addEnd(17)
+linkedList.addStart(7)
+linkedList.addStart(6)
+linkedList.addStart(5)
+linkedList.addStart(4)
+linkedList.addStart(2)
+linkedList.addStart(1)
 
-console.log("LENGTH.. ",linkedList.length)
 
 linkedList.printValues()
 
-const lastNthNode = linkedList.findLastNthNode(3)
+linkedList.insertInSorted(3)
 
-console.log("Last Nth node value: ",lastNthNode)
+linkedList.createLoop(3)
+
+const isLoop = linkedList.detectLoop()
+
+// linkedList.removeByValue(4)
+console.log("Found Loop: ")	
+linkedList.printValues()
+
+
+
+			
