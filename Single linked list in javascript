@@ -193,28 +193,101 @@ function mergeList(firstList, secondList) {
   return dummyList
 }
 
-const linkedList = new NodeList()
+// merge list without using a dummy node
+function mergeListWothoutDummy(firstList, secondList) {
+  let tail = null
+  let head = null
+  let a = firstList.head
+  let b = secondList.head
+  
+  if(a.value < b.value) {
+      head = a
+      a = a.next
+    }
+    else {
+      head = b
+      b = b.next
+    }
+    
+    tail = head
+  
+  
+  while(a && b) {
+    if(a.value < b.value) {
+      tail.next = a
+      a = a.next
+    }
+    else {
+      tail.next = b
+      b = b.next
+    }
+    tail = tail.next
+  }
+  
+  if(!a) {
+    tail.next = b
+  }else {
+    tail.next = a
+  }
+  
 
-linkedList.addStart(8)
-linkedList.addStart(7)
-linkedList.addStart(6)
-linkedList.addStart(5)
-linkedList.addStart(4)
-linkedList.addStart(2)
-linkedList.addStart(1)
+  return head
+}
 
+//Find the sum of two linked lists and insert the result in a another linked list.
+function sum(a,b) {
+  const c = new NodeList()
+  let aRef = a.head
+  let bRef = b.head
+  
+  let carry = 0
+  
+  while(aRef || bRef) {
+    let x = aRef ? aRef.value : 0
+    let y = bRef ? bRef.value : 0
+    
+    const sum = x + y + carry
+    
+    console.log("SUM.... ",x," ",y," ", sum)
+    
+    carry = Math.floor(sum/10)
+    c.addEnd(sum%10)
+    
+    if(aRef)
+      aRef = aRef.next
+    if(bRef)
+      bRef = bRef.next
+  }
+  
+  if(carry > 0){
+    c.addEnd(carry)
+  }
+  
+  return c
+}
 
-linkedList.printValues()
+const a = new NodeList()
 
-linkedList.insertInSorted(3)
+a.addStart(6)
+a.addStart(8)
+a.addStart(5)
+a.addStart(2)
 
-linkedList.createLoop(3)
+const b = new NodeList()
 
-const isLoop = linkedList.detectLoop()
+b.addStart(9)
+b.addStart(7)
+b.addStart(6)
+b.addStart(3)
 
-// linkedList.removeByValue(4)
-console.log("Found Loop: ")	
-linkedList.printValues()
+const c = sum(a,b)
+
+console.log("--------------A-----------")
+a.printValues()
+console.log("--------------B-----------")
+b.printValues()
+console.log("--------------C------------")
+c.printValues()
 
 
 
