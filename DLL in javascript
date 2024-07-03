@@ -1,0 +1,98 @@
+class DoublyNode {
+  constructor(value) {
+    this.prev = null
+    this.next = null
+    this.value = value
+  }
+}
+
+class DoublyLinkedList {
+  constructor() {
+    this.length = 0
+    this.head = null
+    this.tail = null
+  }
+
+  // insert a node at the last
+  insertLast(value) {
+    const newNode = new DoublyNode(value)
+    if(!this.head) {
+      this.head = newNode
+      this.tail = this.head
+      return
+    }
+    
+    this.tail.next = newNode
+    newNode.prev = this.tail
+    this.tail = newNode
+    this.length += 1
+  }
+
+  // insert node at the start
+  insertFirst(value) {
+    const newNode = new DoublyNode(value)
+    if(!this.head) {
+      this.head = newNode
+      this.tail = this.head
+      return
+    }
+    
+    newNode.next = this.head
+    this.head.prev = newNode
+    this.head = newNode
+    
+  }
+
+  // delete the last node
+  deleteLast() {
+    if(!this.tail) return
+    this.tail = this.tail.prev
+    this.tail.next = null
+  }
+
+  // delete the first node
+  deleteFirst() {
+    if(!this.head) return
+    this.head = this.head.next
+    this.head.prev = null
+  }
+
+  // print values from the start to end
+  displayForward() {
+    let refHead = this.head
+    
+    while(refHead) {
+      console.log(refHead.value)
+      refHead = refHead.next
+    }
+  }
+
+  // print values from the end to start
+  displayBackward() {
+    let refTail = this.tail
+    
+    while(refTail) {
+      console.log(refTail.value)
+      refTail = refTail.prev
+    }
+  }
+  
+}
+
+
+const doublyLinkedList = new DoublyLinkedList()
+
+doublyLinkedList.insertLast(5)
+doublyLinkedList.insertLast(4)
+doublyLinkedList.insertLast(6)
+doublyLinkedList.insertLast(7)
+doublyLinkedList.insertLast(9)
+doublyLinkedList.insertFirst(3)
+
+doublyLinkedList.displayForward()
+console.log("--------------")
+doublyLinkedList.deleteLast()
+doublyLinkedList.displayBackward()
+doublyLinkedList.deleteFirst()
+console.log("---------------")
+doublyLinkedList.displayForward()
