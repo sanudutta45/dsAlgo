@@ -1,0 +1,90 @@
+class Node {
+  constructor(value) {
+    this.value = value
+    this.next = null
+  }
+}
+
+class CircularLinkedList {
+  constructor() {
+    this.length = 0
+    this.last = null
+  }
+  
+  insertLast(value) {
+    const newNode = new Node(value)
+    if(!this.last) {
+      this.last = newNode
+      newNode.next = this.last
+      return
+    }
+    
+    newNode.next = this.last.next
+    this.last.next = newNode
+    this.last = newNode
+  }
+  
+  insertFirst(value) {
+    const newNode = new Node(value)
+    if(!this.last) {
+      this.last = newNode
+      newNode.next = this.last
+      return
+    }
+    
+    newNode.next = this.last.next
+    this.last.next = newNode
+  }
+  
+  removeLast() {
+    if(!this.last) return
+    
+    if(this.last.next == this.last) this.last = null
+    else {
+      let head = this.last.next
+      
+      while(head.next != this.last) {
+        head = head.next
+      }
+      
+      head.next = head.next.next
+      this.last = head
+    }
+  }
+  
+  removeFirst() {
+    if(!this.last) return
+    
+    if(this.last.next == this.last) this.last = null
+    else {
+      this.last.next = this.last.next.next
+    }
+  }
+  
+  print() {
+    if(!this.last) return
+    
+    let head = this.last.next
+    while(head != this.last) {
+      console.log(head.value)
+      head = head.next
+    }
+    console.log(head.value)
+  }
+}
+
+const circularList = new CircularLinkedList()
+
+circularList.insertLast(5)
+circularList.insertLast(6)
+circularList.insertLast(7)
+circularList.insertLast(8)
+circularList.insertFirst(4)
+
+circularList.print()
+console.log("---------------------")
+circularList.removeLast()
+circularList.print()
+console.log("---------------------")
+circularList.removeFirst()
+circularList.print()
