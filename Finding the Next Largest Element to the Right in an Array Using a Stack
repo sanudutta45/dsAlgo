@@ -1,0 +1,52 @@
+class Stack {
+  #elements = []
+  #length = 0
+  
+
+  
+  push(value) {
+    this.#elements.push(value)
+    this.#length += 1
+  }
+  
+  pop() {
+    this.#elements.pop()
+    this.#length -= 1
+  }
+  
+  peek() {
+    return this.#elements[this.#length - 1]
+  }
+  
+  isEmpty() {
+    return this.#length === 0
+  }
+}
+
+const largestRight = (arr)=>{
+  const temp = new Array(arr.length)
+  const stack = new Stack()
+  
+  for(let i = arr.length - 1;i>=0;i--) {
+    if(!stack.isEmpty()) {
+      while(!stack.isEmpty() && stack.peek() < arr[i]) {
+        stack.pop()
+      }
+    }
+    
+    if(stack.isEmpty()){
+      temp[i] = -1
+    } else {
+      temp[i] = stack.peek()
+    }
+      stack.push(arr[i])
+  }
+  
+  return temp
+}
+
+const elements = [3,2,4,6,7,9,10]
+
+const larEle = largestRight(elements)
+
+console.log("LARGEST ELEMENTS... ",larEle)
