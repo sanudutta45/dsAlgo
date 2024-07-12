@@ -1,0 +1,58 @@
+class Node {
+  constructor(value) {
+    this.value = value
+    this.next = null
+  }
+}
+
+class Queue {
+  constructor() {
+    this.head = null
+    this.rear = null
+  }
+  
+  enqueue(value) {
+    const newNode = new Node(value)
+    if(!this.rear) {
+      this.rear = newNode
+      this.head = this.rear
+      return
+    }
+    this.rear.next = newNode
+    this.rear = newNode
+  }
+  
+  dequeue() {
+    if(!this.head) return ""
+    
+    const val = this.head.value
+    this.head = this.head.next
+    return val
+  }
+}
+
+
+// generate binary number sequence
+function getBinary(to) {
+  const binary = new Array(to)
+  
+  const queue = new Queue()
+  
+  queue.enqueue("1")
+  
+  for(let i=0;i<to;i++) {
+    const currBinary = queue.dequeue()
+    console.log("CUU.. ",currBinary)
+    binary[i] = currBinary
+    const left = binary[i] + "0"
+    const right = binary[i] + "1"
+    queue.enqueue(left)
+    queue.enqueue(right)
+  }
+  
+  return binary
+}
+
+const binaries = getBinary(5)
+
+console.log("BINARIES.... ",binaries)
