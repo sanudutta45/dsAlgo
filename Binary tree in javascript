@@ -1,0 +1,183 @@
+class Node {
+  constructor(value){
+    this.value = value
+    this.left = null
+    this.right = null
+  }
+}
+
+
+class Stack {
+  constructor() {
+    this.elements = []
+    this.length = 0
+  }
+  
+  push(value) {
+    this.elements.push(value)
+    this.length += 1
+  }
+  
+  pop() {
+    if(this.length === 0) return
+    this.elements.pop()
+    this.length -= 1
+  }
+  
+  poll() {
+    if(this.length === 0) return
+    this.length -= 1
+    return this.elements.pop()
+  }
+  
+  peek() {
+    return this.elements[this.length - 1]
+  }
+  
+  isEmpty() {
+    return this.length === 0
+  }
+}
+
+
+class BinaryTree {
+  constructor() {
+    const node1 = new Node(1)
+    const node2 = new Node(2)
+    const node3 = new Node(3)
+    const node5 = new Node(5)
+    const node6 = new Node(6)
+    const node8 = new Node(8)
+    
+    let head = node1
+    node1.left = node2
+    node1.right = node3
+    node2.left = node5
+    node2.right = node6
+    node3.right = node8
+    
+    this.head = head
+  }
+  
+  
+  recursivePreOrderTraverse(head) {
+    if(!head) return
+    
+    console.log(head.value)
+    this.recursivePreOrderTraverse(head.left)
+    this.recursivePreOrderTraverse(head.right)
+  }
+  
+  iterativePreOrderTraverse() {
+    let head = this.head
+    if(!head) return
+    
+    const stack = new Stack()
+    stack.push(head)
+    while(!stack.isEmpty()){
+      const currHead = stack.peek()
+      console.log(currHead.value)
+      stack.pop()
+      if(currHead.right) {
+        stack.push(currHead.right)
+      }
+      if(currHead.left) {
+        stack.push(currHead.left)
+      }
+    }
+  }
+  
+  recursiveInOrderTraverse(head) {
+    if(!head) return
+    
+    this.recursiveInOrderTraverse(head.left)
+    console.log(head.value)
+    this.recursiveInOrderTraverse(head.right)
+  }
+  
+  iterativeInOrderTraverse() {
+    let head = this.head
+    if(!head) return
+    
+    const stack = new Stack()
+    let temp = head
+    
+    while(!stack.isEmpty() || temp) {
+      if(temp) {
+        stack.push(temp)
+        temp = temp.left
+      } else {
+        temp = stack.peek()
+        console.log(temp.value)
+        temp = temp.right
+        stack.pop()
+      }
+    }
+  }
+  
+  recursivePostOrderTraverse(head) {
+    if(!head) return
+    
+    this.recursivePostOrderTraverse(head.left)
+    this.recursivePostOrderTraverse(head.right)
+    console.log(head.value)
+  }
+  
+  iteratePostOrderTraverse() {
+    let current = this.head
+    
+    if(!current) return
+    
+    const stack = new Stack()
+    
+    while(current || !stack.isEmpty()) {
+      if(current != null) {
+        stack.push(current)
+        current = current.left
+      } else {
+        let temp = stack.peek().right
+        if(temp == null) {
+          temp = stack.poll()
+          console.log(temp.value)
+          while(!stack.isEmpty() && temp === stack.peek().right ) {
+            temp = stack.poll()
+            console.log(temp.value)
+          }
+        } else {
+          current = temp
+        }
+      }
+    }
+  }
+  
+  findMaxVale(head) {
+    if(!head) {
+      return Number.MIN_VALUE
+    }
+    
+    let result = head.value
+    const leftValue = this.findMaxVale(head.left)
+    const rightValue = this.findMaxVale(head.right)
+    
+    if(leftValue > result) result = leftValue
+    if(rightValue > result) result = rightValue
+    
+    return result
+  }
+}
+
+const binaryTree = new BinaryTree()
+
+// binaryTree.recursivePreOrderTraverse(binaryTree.head)
+// console.log("----------------------------")
+// binaryTree.iterativePreOrderTraverse()
+// console.log("----------------------------")
+// binaryTree.recursiveInOrderTraverse(binaryTree.head)
+// console.log("----------------------------")
+// binaryTree.iterativeInOrderTraverse()
+console.log("----------------------------")
+binaryTree.recursivePostOrderTraverse(binaryTree.head)
+console.log("----------------------------")
+binaryTree.iteratePostOrderTraverse()
+console.log("----------------------------")
+console.log("MAX VALUE... ", binaryTree.findMaxVale(binaryTree.head))
