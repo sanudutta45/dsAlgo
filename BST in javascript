@@ -1,0 +1,96 @@
+class BSTNode {
+  constructor(value) {
+    this.left = null
+    this.right = null
+    this.value = value
+  }
+}
+
+class BST {
+  constructor() {
+    this.head = null
+  }
+  
+  insert(root, value) {
+
+    if(!root) {
+      return new BSTNode(value)
+    }
+    
+    if(value < root.value) root.left = this.insert(root.left, value)
+    else if(value > root.value) root.right = this.insert(root.right, value)
+    
+    return root
+  }
+  
+  insertValue(value) {
+    if(!this.head) {
+      const newNode = new BSTNode(value)
+      this.head = newNode
+      return
+    } else {
+      this.insert(this.head, value)
+    }
+  }
+  
+  searchNode(node, value) {
+    if(!node || node.value === value){
+      return node
+    }
+    
+    if(value < node.value) return this.searchNode(node.left, value)
+    else return this.searchNode(node.right, value)
+  }
+  
+  search(value) {
+    const found = this.searchNode(this.head, value)
+
+    return found != null
+  }
+  
+  checkIsValidBST(node, min, max) {
+    if(node == null) {
+      return true
+    }
+    
+    if(node.value <= min || node.value >= max) {
+      return false
+    }
+    
+    const left = this.checkIsValidBST(node.left, min, node.value)
+    if(left) {
+    const right = this.checkIsValidBST(node.right, node.value, max)
+    return right
+    }
+    return false
+  }
+  
+  checkValidBST() {
+    const isValid = this.checkIsValidBST(this.head, Number.MIN_VALUE, Number.MAX_VALUE)
+    console.log(isValid)
+  }
+  
+  preOrderTraverse(head) {
+    if(!head) return
+    
+    console.log(head.value)
+    this.preOrderTraverse(head.left)
+    this.preOrderTraverse(head.right)
+  }
+}
+
+const bst = new BST()
+
+bst.preOrderTraverse(bst.head)
+console.log("-------------")
+bst.insertValue(5)
+bst.insertValue(7)
+bst.insertValue(8)
+bst.insertValue(2)
+bst.insertValue(3)
+bst.insertValue(9)
+bst.insertValue(4)
+// bst.preOrderTraverse(bst.head)
+const found = bst.search(9)
+console.log("FOUND.... ",found)
+const isValid = bst.checkValidBST()
