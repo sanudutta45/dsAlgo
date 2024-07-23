@@ -1,0 +1,79 @@
+class MaxHeap {
+  #heap = [];
+  #size = 0;
+  
+  insert(value) {
+    this.#heap.push(value);
+    this.#size += 1;
+    this.#heapifyUp();
+  }
+  
+   deleteMax() {
+     if(this.#size < 1) return
+     
+     const maxValue = this.#heap[0]
+     this.#swap(0,this.#size - 1)
+     this.#heap.pop()
+     this.#size -= 1
+     this.#sink()
+     return maxValue
+   }
+   
+   #sink() {
+     let pIndex = 0
+     
+     while((2*pIndex + 1) < this.#size) {
+       let maxIndex = (2*pIndex) + 1
+      
+       if(maxIndex<this.#size && this.#heap[maxIndex] < this.#heap[maxIndex + 1]) {
+         maxIndex+=1
+       }
+       
+       if(this.#heap[maxIndex] < this.#heap[pIndex]) break
+       
+       this.#swap(maxIndex, pIndex)
+       pIndex = maxIndex
+     }
+   }
+   
+   #swap(a,b) {
+     [this.#heap[a],this.#heap[b]] = [this.#heap[b],this.#heap[a]]
+   }
+  
+  #heapifyUp() {
+    let currIndex = this.#size - 1;
+    while (currIndex > 0) {
+      const pIndex = Math.floor((currIndex - 1) / 2);
+      const pValue = this.#heap[pIndex];
+      const currValue = this.#heap[currIndex];
+      if (pValue >= currValue) break;
+      
+      this.#heap[pIndex] = currValue;
+      this.#heap[currIndex] = pValue;
+      currIndex = pIndex;
+    }
+  }
+  
+  
+  size() {
+    return this.#size;
+  }
+  
+  print() {
+    console.log(this.#heap);
+  }
+}
+
+const maxHeap = new MaxHeap();
+
+console.log("size: ", maxHeap.size());
+maxHeap.insert(5);
+console.log("size: ", maxHeap.size());
+maxHeap.insert(2);
+maxHeap.insert(3);
+maxHeap.insert(7);
+maxHeap.insert(6);
+maxHeap.insert(4);
+maxHeap.print();
+maxHeap.deleteMax()
+maxHeap.print();
