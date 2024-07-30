@@ -1,0 +1,53 @@
+function bubbleSort(arr, len) {
+  for(let i=0;i<len;i++) {
+    let swapped = false
+    for(let j=0;j<len-i-1;j++) {
+      if(arr[j] > arr[j+1]) {
+        [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+        swapped = true
+      }
+    }
+    if(!swapped) break
+  }
+}
+
+function selectionSort(arr, len) {
+  for(let i = 0; i<len-1; i++) {
+    let minIndex = i
+    for(let j=i+1; j<len; j++) {
+      if(arr[j] < arr[minIndex]) {
+        minIndex = j
+      }
+    }
+    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+  }
+}
+
+function insertionSort(arr, len) {
+  for(let i=1; i<len; i++) {
+    let temp = arr[i]
+    let j = i-1
+    
+    while(j>=0 && arr[j] > temp) {
+      arr[j+1] = arr[j]
+      j--
+    }
+    arr[j+1] = temp
+  }
+}
+
+const arr = [2,7,3,5,4,9,6]
+
+bubbleSort(arr, arr.length)
+
+console.log("BUBBLE SORT... ",arr)
+
+const arr2 = [2,7,3,5,4,9,6]
+
+selectionSort(arr2, arr2.length)
+console.log("SELECTION SORT... ",arr2)
+
+
+const arr3 = [2,7,3,5,4,9,6]
+insertionSort(arr3, arr3.length)
+console.log("INSERTION SORT... ",arr3)
