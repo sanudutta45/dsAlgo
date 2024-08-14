@@ -1,0 +1,22 @@
+function sortedSquares(arr, length) {
+    const temp = Array(length)
+    
+    let i=0
+    let j=length-1
+    
+    for(let k=length-1;k>=0;k--) {
+        if(Math.abs(arr[i]) > Math.abs(arr[j])) {
+            temp[k] = arr[i]*arr[i]
+            i++
+        } else {
+            temp[k] = arr[j]*arr[j]
+            j--
+        }
+    }
+    return temp
+}
+
+let arr = [-20,-9,5,25,30]
+
+const sortedArr = sortedSquares(arr, arr.length);
+console.log(sortedArr)
