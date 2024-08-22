@@ -1,0 +1,189 @@
+// Graph
+
+// Undirected graph using Adjacency Matrix
+// class Graph {
+//     constructor(nodes) {
+//         this.adjMatrix = new Array(nodes)
+//         for(let i=0; i<nodes; i++) {
+//             this.adjMatrix[i] = new Array(nodes).fill(0)
+//         }
+//         this.totalNodes = nodes
+//         this.edges = 0
+//     }
+    
+//     addLink(from, to) {
+//         this.adjMatrix[from][to] = 1
+//         this.adjMatrix[to][from] = 1
+//         this.edges += 1
+//     }
+    
+//     print() {
+//         for(let i=0;i<this.totalNodes;i++) {
+//             console.log(i,": ",this.adjMatrix[i])
+//         }
+//     }
+// }
+
+class Node {
+    constructor(data) {
+        this.data = data
+        this.next = null
+    }
+}
+
+class Queue {
+    constructor() {
+        this.front = null
+        this.rear = null
+        this.length = 0
+    }
+    
+    enqueue(data) {
+        const newNode = new Node(data)
+        this.length += 1
+        if(!this.rear) {
+            this.rear = newNode
+            this.front = this.rear
+            return
+        }
+        
+        this.rear.next = newNode
+        this.rear = newNode
+    }
+    
+    dequeue() {
+        if(!this.front) return
+        this.length -= 1
+        const value = this.front.data
+        this.front = this.front.next
+         if (!this.front) {
+            this.rear = null // This ensures the queue's rear is also null when empty
+        }
+        return value
+    }
+    
+    isEmpty() {
+        return this.length === 0
+    }
+}
+
+// Undirected graph using Adjacency List
+class Graph {
+    constructor() {
+        this.adjList = {}
+        this.totalNodes = 0
+        this.totalEdges = 0
+        this.totalChains = 0
+        this.compIds = []
+    }
+    
+    addNode(node) {
+        this.adjList[node] = []
+        this.totalNodes += 1
+    }
+    
+    addEdge(from, to) {
+        if(!this.adjList[from]) {
+            this.addNode(from)
+        }
+        if(!this.adjList[to]) {
+            this.addNode(to)
+        }
+        
+        this.adjList[from].push(to)
+        this.adjList[to].push(from)
+    }
+    
+    bft(node) {
+        const visited = new Array(this.totalNodes).fill(0)
+        const queue = new Queue()
+        queue.enqueue(node)
+        visited[node] = 1
+        while(!queue.isEmpty()) {
+            const currNode = queue.dequeue()
+            visited[currNode] = 1
+            console.log(currNode)
+            this.adjList[currNode].forEach(child => {
+                if(!visited[child]) {
+                    queue.enqueue(child)
+                    visited[child] = 1
+                }
+                
+            })
+        }
+    }
+    
+    dftIterative(node) {
+        const visited = new Array(this.totalNodes).fill(0)
+        const stack = []
+        stack.push(node)
+        visited[node] = 1
+        while(stack.length != 0) {
+            const currNode = stack.pop()
+            console.log(currNode)
+            this.adjList[currNode].forEach(child=> {
+                if(!visited[child]) {
+                    stack.push(child)
+                    visited[child] = 1
+                }
+            })
+        }
+    }
+    
+    dftRecursiveHandler(visited, key, compId) {
+        console.log(key)
+        visited[key] = 1
+        for(let value of this.adjList[key]) {
+            if(!visited[value]) {
+                this.compIds[value] = compId
+                this.dftRecursiveHandler(visited, value, compId)
+            }
+        }
+    }
+    
+    dftRecursive() {
+        const visited = new Array(this.totalNodes).fill(0)
+        this.compIds = new Array(this.totalNodes).fill(0)
+        for(let i=0; i<this.totalNodes;i++) {
+            if(!visited[i]) {
+                this.compIds[i] = i
+                this.totalChains++
+                this.dftRecursiveHandler(visited, i, this.compIds[i])
+            }
+        }
+    }
+    
+    checkLink(from, to) {
+        if(this.compIds[from] === this.compIds[to]) {
+            return true
+        }
+        return false
+    }
+    
+    print() {
+        for(let node in this.adjList) {
+            console.log(node,"--> ",this.adjList[node].join(", "))
+        }
+    }
+}
+
+
+const newGraph = new Graph(6)
+
+newGraph.addEdge(0,3)
+newGraph.addEdge(0,1)
+newGraph.addEdge(2,4)
+newGraph.addEdge(1,2)
+newGraph.addEdge(3,2)
+newGraph.addEdge(5,6)
+newGraph.addEdge(7,8)
+
+// newGraph.print()
+
+// newGraph.bft(0)
+// console.log(" ")
+// newGraph.dftIterative(0)
+// console.log(" ")
+newGraph.dftRecursive()
+console.log("TOTAL CHAINS... ",newGraph.totalChains)
+console.log("If on same chain: ", newGraph.checkLink(0,4))
