@@ -1,0 +1,39 @@
+const arr = [
+    [1,1,0,0,0],
+    [0,1,0,0,1],
+    [1,0,0,1,1],
+    [0,0,0,0,0],
+    [1,0,1,0,1]
+]
+
+function dfs(arr, visited, row, col, rows, cols) {
+    if(row<0 || row>=rows || col<0 || col>=cols || visited[row][col] || !arr[row][col]) {
+        return
+    }
+    
+    visited[row][col] = 1
+    
+    dfs(arr, visited, row-1, col, rows, cols) //top
+    dfs(arr, visited, row, col-1, rows, cols) // left
+    dfs(arr, visited, row, col+1, rows, cols) //right
+    dfs(arr, visited, row+1, col, rows, cols) //down
+}
+
+function noOfIslands(arr) {
+    const rows = arr.length
+    const cols = arr[0].length
+    const visited = Array.from({ length: rows}, ()=> Array(cols).fill(0))
+    let noOfIslands = 0
+    
+    for(let i=0; i<rows; i++) {
+        for(let j=0; j<cols; j++) {
+            if(!visited[i][j] && arr[i][j]) {
+                noOfIslands+=1
+                dfs(arr, visited, i, j, rows, cols)
+            }
+        }
+    }
+    return noOfIslands
+}
+
+console.log("No of Islands: ",noOfIslands(arr))
