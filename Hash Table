@@ -1,0 +1,78 @@
+class HashNode {
+    constructor(data, key) {
+        this.data = data
+        this.key = key
+        this.next = null
+    }
+}
+
+
+class HashTable {
+    constructor(capacity = 10) {
+        this.bucketSize = capacity
+        this.size = 0
+        this.hashNodes = new Array(capacity).fill(null)
+    }
+    
+    put(key, value) {
+        const bucketKey = this.getBucketIndex(key)
+        let head = this.hashNodes[bucketKey]
+        const newHashNode = new HashNode(value, key)
+        if(!head) {
+            this.hashNodes[bucketKey] = newHashNode
+        } else {
+            while(head.next) {
+                head = head.next
+            }
+            head.next = newHashNode
+        }
+        this.size++
+    }
+    
+    get(key) {
+        const bucketKey = this.getBucketIndex(key)
+        let head = this.hashNodes[bucketKey]
+        if(!head) return null
+        while(head) {
+            if(head.key === key) return head.data
+            head = head.next
+        }
+        
+        return null
+    }
+    
+    remove(key) {
+        const bucketKey = this.getBucketIndex(key)
+        let head = this.hashNodes[bucketKey]
+        if(!head) return null
+        
+        if(head.key === key) {
+            this.hashNodes[bucketKey] = head.next
+            this.size--
+            return key
+        }
+        let previous = head
+        while(head) {
+            if(head.key === key) break
+            previous = head
+            head = head.next
+        }
+        
+        if(!head) return null
+        previous.next = head.next
+        this.size--
+        return key
+    }
+    
+    getBucketIndex(key) {
+        return key % this.bucketSize
+    }
+}
+
+const hashTable = new HashTable(15)
+hashTable.put(5,"JOHN")
+console.log("GET..", hashTable.get(5))
+hashTable.put(50,"SAM....")
+console.log("GET..", hashTable.get(50))
+hashTable.remove(5)
+console.log("GET..", hashTable.get(5))
