@@ -1,0 +1,72 @@
+class Interval {
+    constructor(start, end) {
+        this.start = start
+        this.end = end
+    }
+}
+
+class Node {
+    constructor(data) {
+        this.data = data
+        this.next = null
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null
+        this.tail = null
+    }
+    
+    add(data) {
+        const newNode = new Node(data)
+        if(!this.head) {
+            this.head = newNode
+            this.tail = this.head
+            return
+        }
+        
+        this.tail.next = newNode
+        this.tail = this.tail.next
+    }
+    
+    getLastNode() {
+        if(!this.tail) return null
+        return this.tail.data
+    }
+    
+    print() {
+        let currHead = this.head
+        while(currHead) {
+            console.log(currHead.data)
+            currHead = currHead.next
+        }
+    }
+}
+
+function nonOverlappingIntervals(intervalList = []) {
+    intervalList = intervalList.sort((a,b) => a.start - b.start)
+    const intervalChain = new LinkedList()
+    intervalChain.add(intervalList[0])
+    if(intervalList.length === 1) return intervalChain
+    for (let i=1; i<intervalList.length; i++) {
+        const lastInterval = intervalChain.getLastNode()
+        if(lastInterval.end >= intervalList[i].start) {
+            lastInterval.end = Math.max(intervalList[i].end, lastInterval.end)
+        } else {
+            intervalChain.add(intervalList[i])
+        }
+    }
+    return intervalChain
+}
+
+const interval1 = new Interval(0, 3)
+const interval2 = new Interval(2, 4)
+const interval3 = new Interval(5, 8)
+const interval4 = new Interval(11,14)
+const interval5 = new Interval(7,10)
+
+const intervalList = [interval1, interval2, interval3, interval4, interval5]
+
+const res = nonOverlappingIntervals(intervalList)
+res.print()
