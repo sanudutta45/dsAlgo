@@ -1,0 +1,80 @@
+class Node {
+    constructor(data) {
+        this.data = data
+        this.next = null
+    }
+}
+
+class Interval {
+    constructor(start, end) {
+        this.start = start
+        this.end = end
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null
+        this.tail = null
+    }
+    
+    add(data) {
+        const newNode = new Node(data)
+        if(!this.head) {
+            this.head = newNode
+            this.tail = this.head
+            return
+        }
+        
+        this.tail.next = newNode
+        this.tail = newNode
+    }
+    
+    print() {
+        let refHead = this.head
+        
+        while(refHead) {
+            console.log(refHead.data)
+            refHead = refHead.next
+        }
+    }
+}
+
+function insertNonLappingInterval(intervals=[], intervalToAdd) {
+    const linkedList = new LinkedList()
+    let i = 0
+    
+    while(i < intervals.length && intervalToAdd.start > intervals[i].end) {
+        linkedList.add(intervals[i])
+        i++
+    }
+    
+    const mergedInterval = new Interval(intervalToAdd.start, intervalToAdd.end)
+    
+    while(i < intervals.length && intervalToAdd.end >= intervals[i].start) {
+        mergedInterval.start = Math.min(intervals[i].start, mergedInterval.start)
+        mergedInterval.end = Math.max(intervals[i].end, mergedInterval.end)
+        i++
+    }
+    
+    linkedList.add(mergedInterval)
+    
+    while(i < intervals.length) {
+        linkedList.add(intervals[i])
+        i++
+    }
+    
+    return linkedList
+}
+
+const intervals = [
+    new Interval(1,3),
+    new Interval(5,7),
+    new Interval(9,12),
+    new Interval(14,16)
+    ]
+    
+const intervalToAdd = new Interval(6,11)
+
+const newIntervals = insertNonLappingInterval(intervals, intervalToAdd)
+newIntervals.print()
