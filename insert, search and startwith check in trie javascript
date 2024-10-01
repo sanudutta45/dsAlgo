@@ -1,0 +1,60 @@
+class TrieNode {
+    constructor()  {
+        this.indexes = new Array(26)
+        this.word = false
+    }
+}
+
+class Trie {
+    constructor() {
+        this.head = new TrieNode()
+    }
+    
+    insert(word) {
+        let currNode = this.head
+        
+       for(let char of word) {
+           const index = char.charCodeAt(0) - 'a'.charCodeAt(0);
+           if(!currNode.indexes[index]) {
+               const newNode = new TrieNode()
+               currNode.indexes[index] = newNode
+           }
+           currNode = currNode.indexes[index]
+       }
+       currNode.word = true
+    }
+    
+    isPresent(word) {
+        let currNode = this.head
+        for(let char of word) {
+            const index = char.charCodeAt(0) - 'a'.charCodeAt(0);
+            if(!currNode.indexes[index]) {
+                return false
+            }
+            currNode = currNode.indexes[index]
+        }
+        return currNode.word
+    }
+    
+    startsWith(word) {
+        let currNode = this.head
+        for(let char of word) {
+            const index = char.charCodeAt(0) - 'a'.charCodeAt(0)
+            if(!currNode.indexes[index]) {
+                return false
+            }
+            currNode = currNode.indexes[index]
+        }
+        return true
+    }
+}
+
+const trie = new Trie()
+trie.insert("word")
+trie.insert("apple")
+trie.insert("apps")
+
+const present = trie.isPresent("apps")
+console.log("PRESENT ",present)
+const startWith = trie.startsWith("appx")
+console.log("START WITH ",startWith)
