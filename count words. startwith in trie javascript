@@ -1,0 +1,64 @@
+class TrieNode {
+    constructor()  {
+        this.indexes = new Array(26)
+        this.cp = 0
+        this.ew = 0
+    }
+}
+
+class Trie {
+    constructor() {
+        this.head = new TrieNode()
+    }
+    
+    insert(word) {
+        let currNode = this.head
+        
+       for(let char of word) {
+           const index = char.charCodeAt(0) - 'a'.charCodeAt(0);
+           if(!currNode.indexes[index]) {
+               const newNode = new TrieNode()
+               currNode.indexes[index] = newNode
+           }
+           currNode.cp += 1
+           currNode = currNode.indexes[index]
+       }
+       currNode.cp += 1
+       currNode.ew += 1
+    }
+    
+    countNoOfWords(word) {
+        let currNode = this.head
+        for(let char of word) {
+            const index = char.charCodeAt(0) - 'a'.charCodeAt(0);
+            if(!currNode.indexes[index]) {
+                return 0
+            }
+            currNode = currNode.indexes[index]
+        }
+        return currNode.ew
+    }
+    
+    countStartsWith(word) {
+        let currNode = this.head
+        for(let char of word) {
+            const index = char.charCodeAt(0) - 'a'.charCodeAt(0)
+            if(!currNode.indexes[index]) {
+                return 0
+            }
+            currNode = currNode.indexes[index]
+        }
+        return currNode.cp
+    }
+}
+
+const trie = new Trie()
+trie.insert("word")
+trie.insert("word")
+trie.insert("apple")
+trie.insert("apps")
+
+const present = trie.countNoOfWords("word")
+console.log("PRESENT ",present)
+const startWith = trie.countStartsWith("app")
+console.log("START WITH ",startWith)
