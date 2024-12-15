@@ -1,0 +1,25 @@
+class TrieNode {
+    constructor() {
+        this.indexes = new Array(26)
+    }
+}
+
+let root = new TrieNode()
+
+let string = "abad"
+
+let count = 0;
+
+for(let i=0; i<string.length; i++) {
+    let currentHead = root;
+    for(let j=i; j<string.length; j++) {
+        const index = string[j].charCodeAt(0) - 'a'.charCodeAt(0)
+        if(!currentHead.indexes[index]) {
+            currentHead.indexes[index] = new TrieNode()
+            count++
+        }
+        currentHead = currentHead.indexes[index]
+    }
+    
+}
+console.log("DISTRINCT SUBSTRING, ",count+1)
