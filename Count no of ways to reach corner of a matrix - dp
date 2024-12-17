@@ -1,0 +1,11 @@
+function countWays(m,n,memo={}) {
+    if(m === 0 || n === 0) return 0
+    if(m === 1 && n === 1) return 1
+    let key = m + "," + n
+    if(key in memo) return memo[key]
+    
+    memo[key] = countWays(m-1,n, memo) + countWays(m, n-1, memo)
+    return memo[key]
+}
+
+console.log("No of ways: ",countWays(2,3))
