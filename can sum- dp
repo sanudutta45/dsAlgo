@@ -1,0 +1,17 @@
+function canSum(sum,elements=[], memo={}) {
+    if(sum === 0) return true
+    if(sum < 0) return false
+    if(sum in memo) return memo[sum]
+    
+    for(let element of elements) {
+        let targetSum = sum - element
+        if(canSum(targetSum, elements, memo)) {
+            memo[targetSum] = true
+            return true
+        }
+    }
+    memo[sum] = false
+    return false
+}
+
+console.log("Target sum: ",canSum(20, [1,2,3,7,4]))
