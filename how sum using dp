@@ -1,0 +1,16 @@
+function howSum(sum,elements=[], memo={}) {
+    if(sum in memo) return memo[sum]
+    if(sum === 0) return []
+    if(sum < 0) return null
+    
+    for(let element of elements) {
+        let targetSum = sum - element
+        sumEle = howSum(targetSum, elements, memo)
+        if(sumEle) {
+            memo[targetSum] = [...sumEle, element]
+            return memo[targetSum]
+        }
+    }
+}
+
+console.log("Target sum: ",howSum(20, [3,1,7,4]))
