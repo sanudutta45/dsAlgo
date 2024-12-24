@@ -1,0 +1,22 @@
+function bestSum(sum,elements=[], memo={}) {
+    if(sum in memo) return memo[sum]
+    if(sum === 0) return []
+    if(sum < 0) return null
+    
+    let minSum = null
+    for(let element of elements) {
+        let targetSum = sum - element
+        const sumEle = bestSum(targetSum, elements, memo)
+        if(sumEle) {
+            const combination = [...sumEle, element]
+            if(minSum === null || minSum.length > combination.length) {
+                minSum = combination
+            }
+        }
+    }
+    
+    memo[sum] = minSum
+    return minSum
+}
+
+console.log("Target sum: ",bestSum(20, [3,5,1,7,4]))
