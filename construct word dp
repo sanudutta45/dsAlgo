@@ -1,0 +1,18 @@
+function canConstruct(word, wordList=[], memo={}) {
+    if(word in memo) return memo[word]
+    if(word === "") return true
+    
+    for(let w of wordList) {
+        if(word.indexOf(w) === 0) {
+            const suffix = word.slice(w.length)
+            if(canConstruct(suffix, wordList, memo)) {
+                memo[word] = true
+                return true
+            }
+        }
+    }
+    memo[word] = false
+    return false
+}
+
+console.log("CAN CONSTRUCT... ",canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeef",["e","f"]))
