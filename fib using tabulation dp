@@ -1,0 +1,21 @@
+// fib using tabulation dp
+// O(n)
+// 
+function fib(n) {
+  const fibTab = Array(n + 1).fill(0)
+  fibTab[0] = 0
+  fibTab[1] = 1
+
+  if (n < 2) return fibTab[n]
+
+  for (let i = 2; i <= n; i++) {
+    fibTab[i] = fibTab[i - 1] + fibTab[i - 2]
+  }
+
+  return fibTab[n]
+}
+
+console.log("FIB OF 8", fib(8))
+console.log("FIB OF 12", fib(12))
+console.log("FIB OF 23", fib(23))
+console.log("FIB OF 32", fib(32))
