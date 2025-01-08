@@ -1,0 +1,20 @@
+// can sum with the given number list
+function canSum(sum, noList = []) {
+  const eachSums = Array(sum + 1).fill(false)
+  eachSums[0] = true
+
+  for (let i = 0; i <= sum; i++) {
+    if (eachSums[i] === true) {
+      for(let j of noList) {
+        eachSums[i+j] = true
+      }
+    }
+  }
+
+  return eachSums[sum]
+}
+
+console.log("CAN SUM ", canSum(7, [3, 4]))
+console.log("CAN SUM ", canSum(6, [3, 4, 5]))
+console.log("CAN SUM ", canSum(10, [5, 6, 5]))
+console.log("CAN SUM ", canSum(7, [3, 3]))
