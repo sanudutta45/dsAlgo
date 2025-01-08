@@ -1,0 +1,19 @@
+function howSum(sum, noList = []) {
+  const eachSums = Array(sum + 1).fill(null)
+  eachSums[0] = []
+
+  for (let i = 0; i <= sum; i++) {
+    if (eachSums[i]) {
+      for (let j of noList) {
+        eachSums[i + j] = [...eachSums[i], j]
+      }
+    }
+  }
+
+  return eachSums[sum]
+}
+
+console.log("HOW SUM ", howSum(7,[3,4]))
+console.log("HOW SUM ", howSum(6,[3,2,5]))
+console.log("HOW SUM ", howSum(7,[3,5]))
+console.log("HOW SUM ", howSum(9,[2,5]))
