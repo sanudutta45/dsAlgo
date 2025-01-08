@@ -1,0 +1,18 @@
+// no. of ways to move from one corner to other in a matrix
+function noOfWays(m, n) {
+  const ways = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
+  ways[1][1] = 1
+
+  for (let i = 0; i <= m; i++) {
+    for (let j = 0; j <= n; j++) {
+      const currEle = ways[i][j]
+      if (i + 1 <= m && j <= n) ways[i + 1][j] += currEle
+      if (i <= m && j + 1 <= n) ways[i][j + 1] += currEle
+    }
+  }
+
+  return ways[m][n]
+}
+
+console.log("NO OF WAYS, ", noOfWays(2, 3))
+console.log("NO OF WAYS, ", noOfWays(3, 3))
