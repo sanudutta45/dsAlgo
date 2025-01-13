@@ -1,0 +1,22 @@
+function canConstruct(targetWord, wordBank = []) {
+  const combination = Array(targetWord.length + 1).fill(false)
+
+  combination[0] = true
+
+  for (let i = 0; i <= targetWord.length; i++) {
+    if (combination[i] === true) {
+      for (let word of wordBank) {
+        const prefix = targetWord.slice(i, i + word.length)
+        if (prefix === word) {
+          combination[i + word.length] = true
+        }
+      }
+    }
+  }
+  return combination[targetWord.length]
+}
+
+console.log("can construct... ", canConstruct("abcd", ["ab", "cd"]))
+console.log("can construct... ", canConstruct("efffffffffffffffffffffef", ["e", "f"]))
+console.log("can construct... ", canConstruct("eeeefffhhhh", ["e", "eh","ef"]))
+console.log("can construct... ", canConstruct("abcdef", ["abc", "de","f","def"]))
