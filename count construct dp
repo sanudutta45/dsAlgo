@@ -1,0 +1,17 @@
+function countConstruct(targetWord="", wordBank=[], memo={}) {
+    if(targetWord === "") return 1
+    if(targetWord in memo) return memo[targetWord]
+
+    let count = 0
+    for(let word of wordBank) {
+        if(targetWord.indexOf(word) === 0) {
+            const target = targetWord.slice(word.length)
+            count += countConstruct(target, wordBank)
+        }
+    }
+
+    memo[targetWord] = count
+    return count
+}
+
+console.log("COUNT WORDS.. ",countConstruct("abcd", ["ab","a","bc","d","cd"]))
