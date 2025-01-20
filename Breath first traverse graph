@@ -1,0 +1,51 @@
+function breathFirstIterative(start, graph) {
+  const queue = []
+  const visited = new Set()
+
+  queue.push(start)
+
+  while (queue.length > 0) {
+    const curNode = queue.shift()
+
+    if (!visited.has(curNode)) {
+      console.log(curNode)
+      visited.add(curNode)
+      queue.push(...graph[curNode])
+    }
+  }
+}
+
+function breathFirstRecursion(queue = [], graph, visited = new Set()) {
+  if (queue.length === 0) return
+
+  const nextQueue = []
+
+  for (const node of queue) {
+    if (!visited.has(node)) {
+      console.log(node)
+      visited.add(node)
+      nextQueue.push(...graph[node])
+    }
+  }
+
+  breathFirstRecursion(nextQueue, graph, visited)
+}
+
+breathFirstIterative(1, {
+  1: [2],
+  2: [3],
+  3: [4, 5],
+  4: [],
+  5: [4, 6],
+  6: [],
+})
+
+console.log("------------------------------")
+breathFirstRecursion([1], {
+  1: [2],
+  2: [3],
+  3: [4, 5],
+  4: [],
+  5: [4, 6],
+  6: [],
+})
