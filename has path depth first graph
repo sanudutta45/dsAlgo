@@ -1,0 +1,29 @@
+function hasPath(src, dest, graph) {
+  const stack = []
+  const visited = new Set()
+
+  stack.push(src)
+
+  while (stack.length > 0) {
+    const curNode = stack.pop()
+    if (curNode === dest) return true
+    if (!visited.has(curNode)) {
+      visited.add(curNode)
+      stack.push(...graph[curNode])
+    }
+  }
+
+  return false
+}
+
+console.log(
+  "HAS PATH ",
+  hasPath(4, 6, {
+    1: [2],
+    2: [3],
+    3: [4, 5],
+    4: [],
+    5: [4, 6],
+    6: [],
+  })
+)
