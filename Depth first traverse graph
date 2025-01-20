@@ -1,0 +1,36 @@
+// depth first traverse ussing stack
+function depthFirst(start, graph) {
+  const stack = []
+  const visited = new Set()
+  stack.push(start)
+
+  while (stack.length > 0) {
+    const currNode = stack.pop()
+
+    if(!visited.has(currNode)) {
+        console.log(currNode)
+        visited.add(currNode)
+        stack.push(...graph[currNode])
+    }
+  }
+}
+
+// depth first traverse using recursion
+function depthFirst(start, graph, visited = new Set()) {
+  if (visited.has(start)) return
+  console.log(start)
+  visited.add(start)
+
+  for (let node of graph[start]) {
+    depthFirst(node, graph, visited)
+  }
+}
+
+depthFirst(1, {
+  1: [2],
+  2: [3],
+  3: [4, 5],
+  4: [],
+  5: [4, 6],
+  6: [],
+})
