@@ -1,0 +1,35 @@
+function countConnectedComponent(graph) {
+    const visited = new Set()
+    let count = 0;
+    for(let node in graph) {
+        if(explore(node, graph, visited)) count += 1
+    }
+
+    return count;
+}
+
+function explore(node, graph, visited) {
+    if (visited.has(node)) return false
+    visited.add(node)
+
+    for(let child of graph[node]) {
+        if(!visited.has(String(child))) {
+            explore(String(child), graph, visited)
+        }
+    }
+
+    return true
+}
+
+console.log(
+  "No of independent compoent: ",
+  countConnectedComponent({
+    1: [2, 3],
+    2: [1, 4],
+    3: [1],
+    4: [2],
+    5: [6],
+    6: [5],
+    7: [],
+  })
+)
