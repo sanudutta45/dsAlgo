@@ -1,0 +1,43 @@
+function hasPathUndirectedEdges(src, dest, edges) {
+  const graph = adjacencyList(edges)
+  return depthFirstSearch(src, dest, graph)
+}
+
+function adjacencyList(edges) {
+  const graph = {}
+
+  for (let edge of edges) {
+    const [a, b] = edge
+    if (!graph[a]) graph[a] = []
+    if (!graph[b]) graph[b] = []
+
+    graph[a].push(b)
+    graph[b].push(a)
+  }
+  return graph
+}
+
+function depthFirstSearch(src, dest, graph, visited = new Set()) {
+  if (src === dest) return true
+  if (visited.has(src)) return false
+  visited.add(src)
+
+  for (let node of graph[src]) {
+    if (depthFirstSearch(node, dest, graph, visited)) {
+      return true
+    }
+  }
+
+  return false
+}
+console.log(
+  "HAS PATH OF GIVEN EDGES: ",
+  hasPathUndirectedEdges(2, 6, [
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [3, 5],
+    [5, 4],
+    [5, 6],
+  ])
+)
