@@ -1,0 +1,39 @@
+// longest connected component
+function longestConnectedComponent(graph) {
+  let longest = 0
+
+  for (let node in graph) {
+    const size = exploreSize(node, graph)
+    if (size > longest) longest = size
+  }
+
+  return longest
+}
+
+function exploreSize(node, graph, visited = new Set()) {
+  if (visited.has(node)) return 0
+  visited.add(node)
+
+  let size = 1
+  for (let neighbor of graph[node]) {
+    size += exploreSize(String(neighbor), graph, visited)
+  }
+
+  return size
+}
+
+console.log(
+  "LONGEST COMPONENT: ",
+  longestConnectedComponent({
+    1: [2, 3, 4, 5],
+    2: [1],
+    3: [1],
+    4: [1],
+    5: [1],
+    6: [7],
+    7: [6, 8],
+    8: [7],
+    9: [10],
+    10: [9],
+  })
+)
