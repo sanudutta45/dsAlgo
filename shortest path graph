@@ -1,0 +1,27 @@
+// shortest path
+function shortestPath(src, dist, graph) {
+  const queue = [[src, 0]]
+  const visited = new Set([src])
+
+  while (queue.length > 0) {
+    const [node, distance] = queue.shift()
+    if (node === dist) return distance
+    visited.add(node)
+    for (let neighbor of graph[node]) {
+      if (!visited.has(neighbor)) queue.push([neighbor, distance + 1])
+    }
+  }
+
+  return -1
+}
+
+console.log(
+  "SHORTEST PATH: ",
+  shortestPath("w", "z", {
+    w: ["x", "q"],
+    x: ["w", "y"],
+    q: ["w", "z"],
+    y: ["x", "z"],
+    z: ["y", "q"],
+  })
+)
