@@ -1,0 +1,24 @@
+function getBaseValue(divident, divisor) {
+  if (divident === 0) return ""
+
+  const quotient = Math.floor(divident / divisor)
+  const remainder = divident % divisor
+
+  // Convert remainder to letter if it's 10-35 (for bases > 10)
+  const digit = remainder < 10 ? remainder : String.fromCharCode(55 + remainder) // 55 + 10 = 'A'
+
+  return getBaseValue(quotient, divisor) + digit
+}
+
+function convertToBase(num, base) {
+  if (num === 0) return "0" // Explicitly return "0" for input 0
+  return getBaseValue(num, base)
+}
+
+// Test cases
+console.log(convertToBase(9, 2)) // "1001"
+console.log(convertToBase(10, 2)) // "1010"
+console.log(convertToBase(255, 16)) // "FF"
+console.log(convertToBase(31, 16)) // "1F"
+console.log(convertToBase(1234, 36)) // "YA" (Base 36 supports 0-9 and A-Z)
+console.log(convertToBase(0, 2)) // "0"
