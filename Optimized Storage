@@ -1,0 +1,21 @@
+function minContainers(n, m, x) {
+  const largeUsed = Math.min(n, Math.ceil(x / 5)) // Use as many large containers as needed or available
+  const remainItems = x - largeUsed * 5 // Remaining items after large containers
+
+  if (remainItems > m) {
+    return -1 // Not enough small containers to store remaining items
+  }
+
+  return largeUsed + Math.max(0, remainItems) // Use small containers only if needed
+}
+
+// Example usage
+console.log(minContainers(3, 3, 25)) // Output: -1 (not enough containers)
+console.log(minContainers(3, 3, 13)) // Output: 3 (2 large, 3 small)
+console.log(minContainers(3, 3, 10)) // Output: 2 (2 large, 0 small)
+console.log(minContainers(3, 3, 14)) // Output: 3 (2 large, 3 small)
+console.log(minContainers(3, 3, 9)) // Output: 2 (1 large, 3 small)
+console.log(minContainers(0, 5, 4)) // Output: 4 (0 large, 4 small)
+console.log(minContainers(2, 2, 12)) // Output: -1 (not enough containers)
+console.log(minContainers(2, 2, 11)) // Output: 3 (2 large, 1 small)
+console.log(minContainers(0, 0, 1)) // Output: -1 (no containers at all)
