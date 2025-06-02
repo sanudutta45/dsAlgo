@@ -1,0 +1,25 @@
+function maxArrayLenWithAtMostDistinctChar(s = "", k) {
+  let l = 0;
+  let maxLength = 0;
+  const freqMap = new Map();
+
+  for (let r = 0; r < s.length; r++) {
+    const char = s[r];
+    freqMap.set(char, (freqMap.get(char) || 0) + 1);
+
+    while (freqMap.size > k) {
+      const leftChar = s[l];
+      freqMap.set(leftChar, freqMap.get(leftChar) - 1);
+      if (freqMap.get(leftChar) === 0) {
+        freqMap.delete(leftChar);
+      }
+      l++;
+    }
+
+    maxLength = Math.max(maxLength, r - l + 1);
+  }
+
+  return maxLength;
+}
+
+console.log(maxArrayLenWithAtMostDistinctChar("abbbcdeeeeeeef",3))
