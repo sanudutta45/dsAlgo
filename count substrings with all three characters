@@ -1,0 +1,23 @@
+function countSubstringsWithAllThreeChars(s = "") {
+  let l = 0
+  let noOfSubstring = 0
+  let map = new Map()
+
+  for (let r = 0; r < s.length; r++) {
+    const rightChar = s[r]
+    map.set(rightChar, (map.get(rightChar) || 0) + 1)
+
+    while (map.size >= 3) {
+      noOfSubstring += s.length - r 
+      const leftChar = s[l]
+      map.set(leftChar, map.get(leftChar) - 1)
+      if (map.get(leftChar) === 0) {
+        map.delete(leftChar)
+      }
+      l++
+    }
+  }
+  return noOfSubstring
+}
+
+console.log(countSubstringsWithAllThreeChars("bbcabc"))
