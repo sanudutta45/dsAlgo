@@ -1,0 +1,68 @@
+function longestRepeatingCharacterWithReplacement(s = "", k = 0) {
+  let l = 0
+  let maxLength = 0
+  let maxFeqChar = 0
+  const map = new Map()
+
+  for (let r = 0; r < s.length; r++) {
+    map.set(s[r], (map.get(s[r]) || 0) + 1)
+    maxFeqChar = Math.max(maxFeqChar, map.get(s[r]))
+    while ((r - l + 1) - maxFeqChar > k) {
+      map.set(s[l], map.get(s[l]) - 1)
+      l++
+    }
+    maxLength = Math.max(maxLength, r - l + 1)
+  }
+  return maxLength
+}
+
+console.log("Test 1:", longestRepeatingCharacterWithReplacement("AABABBA", 1)) // Expected: 4
+console.log("Test 2:", longestRepeatingCharacterWithReplacement("AABABBA", 2)) // Expected: 5
+console.log("Test 3:", longestRepeatingCharacterWithReplacement("AABABBA", 3)) // Expected: 6
+console.log("Test 4:", longestRepeatingCharacterWithReplacement("AABABBA", 4)) // Expected: 7
+console.log("Test 5:", longestRepeatingCharacterWithReplacement("AABABBA", 5)) // Expected: 7
+console.log("Test 6:", longestRepeatingCharacterWithReplacement("AABABBA", 6)) // Expected: 7
+console.log("Test 7:", longestRepeatingCharacterWithReplacement("AABABBA", 7)) // Expected: 7
+console.log("Test 8:", longestRepeatingCharacterWithReplacement("AABABBA", 8)) // Expected: 7
+console.log("Test 9:", longestRepeatingCharacterWithReplacement("AABABBA", 9)) // Expected: 7
+console.log("Test 10:", longestRepeatingCharacterWithReplacement("AABABBA", 10)) // Expected: 7
+
+// Edge cases
+console.log("\nEdge Cases:")
+console.log("Empty string:", longestRepeatingCharacterWithReplacement("", 1)) // Expected: 0
+console.log("Single character:", longestRepeatingCharacterWithReplacement("A", 1)) // Expected: 1
+console.log("All same characters:", longestRepeatingCharacterWithReplacement("AAAAA", 2)) // Expected: 5
+console.log("No repeating characters:", longestRepeatingCharacterWithReplacement("ABCDE", 2)) // Expected: 3
+console.log("Negative k:", longestRepeatingCharacterWithReplacement("AABABBA", -1)) // Expected: 0
+console.log("Special characters:", longestRepeatingCharacterWithReplacement("!@#$%^&*()", 2)) // Expected: 3
+console.log("Numbers:", longestRepeatingCharacterWithReplacement("123456", 2)) // Expected: 3
+console.log("String with spaces:", longestRepeatingCharacterWithReplacement("A A B A B", 2)) // Expected: 5
+
+// Test cases to verify the algorithm
+console.log("\nAlgorithm Verification Tests:")
+// Test case 1: Simple case with one replacement
+console.log("Test 1:", longestRepeatingCharacterWithReplacement("AABABBA", 1)) // Expected: 4 (AABA)
+
+// Test case 2: All same characters
+console.log("Test 2:", longestRepeatingCharacterWithReplacement("AAAAA", 2)) // Expected: 5
+
+// Test case 3: Alternating characters
+console.log("Test 3:", longestRepeatingCharacterWithReplacement("ABAB", 2)) // Expected: 4
+
+// Test case 4: Multiple character types
+console.log("Test 4:", longestRepeatingCharacterWithReplacement("AABBBCC", 2)) // Expected: 5
+
+// Test case 5: Complex case with multiple replacements
+console.log("Test 5:", longestRepeatingCharacterWithReplacement("AABABBA", 2)) // Expected: 5
+
+// Test case 6: String with spaces and special characters
+console.log("Test 6:", longestRepeatingCharacterWithReplacement("A A B A B", 2)) // Expected: 5
+
+// Test case 7: String with numbers
+console.log("Test 7:", longestRepeatingCharacterWithReplacement("112233", 2)) // Expected: 4
+
+// Test case 8: Edge case with k = 0
+console.log("Test 8:", longestRepeatingCharacterWithReplacement("AABABBA", 0)) // Expected: 2
+
+// Test case 9: Long string with multiple replacements
+console.log("Test 9:", longestRepeatingCharacterWithReplacement("AABABBAABABBA", 3)) // Expected: 10
